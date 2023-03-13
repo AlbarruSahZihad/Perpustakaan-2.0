@@ -336,9 +336,40 @@ class perpustakaan
           return $query->num_rows;
       }
 
+      public function prosestambahpeminjaman($nomorpeminjaman, $siswa, $buku, $tanggalpinjam, $tanggalkembali)
+      {
+        $query = $this->koneksi->query("INSERT INTO pinjam VALUES ('$nomorpeminjaman', '$siswa', '$buku', '$tanggalpinjam', '$tanggalkembali')");
+         
+        if($query){
+            session_start();
+            $_SESSION['seuccess'] = 'Data berhasil di simpan';
+            header('locatin:../dashboard.php?pages=peminjaman');
+        }
+      }
+
+      public function hapuspeminjaman($nisn)
+      {
+        $query = $this->koneksi->query("DELETE FROM pinjam where nisn='$nisn'");
+
+        if($query){
+            session_start();
+            $_SESSION['success'] = 'Data berhasil di hapus';
+            header('location:../dashboard.php?pages=peminjaman');
+        }
+
+      }
+
+      public function jumlahpeminjaman()
+    {
+        $query = $this->koneksi->query("SELECT * FROM pinjam");
+        return $query->num_rows;
+    }
+
+    public function carinisn($nisn)
+    {
+        header("location:../dashboard.php?pages=peminjaman&act=tambah&nisn=$nisn");
+    }
+
     }
 
 $perpus = new perpustakaan();
-// print_r($perpus->$list_users());
-// echo "<br>";
-// echo $perpus->$listusers();
